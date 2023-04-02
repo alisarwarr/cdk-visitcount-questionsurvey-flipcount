@@ -1,0 +1,139 @@
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+
+type VisitCount {
+    id: ID!
+    count: Int!
+}
+
+
+type Options {
+    text: String!
+    correct: Boolean!
+    percentage: Float!
+    selectedCount: Int!
+}
+
+
+type QuestionAnswer {
+    id: ID!
+    selectedCount: Int!
+#    
+    question: String!
+    answers: [Options!]         #any one in the array is of true correct answer
+}
+
+
+type FlipCount {
+    id: ID!
+    count: Int!
+#    
+    image: String!
+    title: String!
+    date: String!
+    description: String!
+}
+
+
+type Query {
+    getVisitCount: Int
+    ##
+    ##
+    getAllQuestions: [QuestionAnswer!]
+    ##
+    ##
+    getAllFlipCounts: [FlipCount!]
+}
+
+
+input OptionsInput {
+    text: String!
+    correct: Boolean!
+    percentage: Float!
+    selectedCount: Int!
+}
+
+
+input QuestionAnswerInput {
+    id: ID!
+    selectedCount: Int!
+#    
+    question: String!
+    answers: [OptionsInput!]         #any one in the array is of true correct answer
+}
+
+
+input FlipCountInput {
+    id: ID!
+    count: Int!
+#    
+    image: String!
+    title: String!
+    date: String!
+    description: String!
+}
+
+
+type Mutation {
+    increaseVisitCount: String!
+    resetVisitCountToZero: String!
+    ##
+    ##
+    addQuestion(content: QuestionAnswerInput!):  String!
+    deleteQuestion(question: String!):  String!
+    addAllQuestions(content: [QuestionAnswerInput!]):  String!
+    deleteAllQuestions: String!
+    updateQuestionAnswerPercentage(id: ID!, answerText: String!): String!
+    ##
+    ##
+    addFlipCount(content: FlipCountInput!): String!
+    deleteFlipCount(id: ID!): String!
+    addAllFlipCounts(content: [FlipCountInput!]): String!
+    deleteAllFlipCounts: String!
+    increaseFlipCount(id: ID!): String!
+}
+
+
+type Subscription {
+    onIncreaseVisitCount: String!
+        @aws_subscribe(mutations: ["increaseVisitCount"])
+
+    onResetVisitCountToZero: String!
+        @aws_subscribe(mutations: ["resetVisitCountToZero"])
+    ##
+    ##
+    onAddQuestion: String!
+        @aws_subscribe(mutations: ["addQuestion"])
+
+    onDeleteQuestion: String!
+        @aws_subscribe(mutations: ["deleteQuestion"])
+
+    onAddAllQuestions: String!
+        @aws_subscribe(mutations: ["addAllQuestions"])
+
+    onDeleteAllQuestions: String!
+        @aws_subscribe(mutations: ["deleteAllQuestions"])
+
+    onUpdateQuestionAnswerPercentage: String!
+        @aws_subscribe(mutations: ["updateQuestionAnswerPercentage"])
+    ##
+    ##
+    onAddFlipCount: String!
+        @aws_subscribe(mutations: ["addFlipCount"])
+
+    onDeleteFlipCount: String!
+        @aws_subscribe(mutations: ["deleteFlipCount"])
+
+    onAddAllFlipCounts: String!
+        @aws_subscribe(mutations: ["addAllFlipCounts"])
+
+    onDeleteAllFlipCounts: String!
+        @aws_subscribe(mutations: ["deleteAllFlipCounts"])
+
+    onincreaseFlipCount: String!
+        @aws_subscribe(mutations: ["increaseFlipCount"])
+}
